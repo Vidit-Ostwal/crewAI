@@ -250,6 +250,7 @@ def write_env_file(folder_path, env_vars):
             file.write(f"{key}={value}\n")
 
 
+
 def get_crew(crew_path: str = "crew.py", require: bool = False) -> Crew | None:
     """Get the crew instance from the crew.py file."""
     try:
@@ -273,9 +274,35 @@ def get_crew(crew_path: str = "crew.py", require: bool = False) -> Crew | None:
                         for attr_name in dir(module):
                             attr = getattr(module, attr_name)
                             try:
+                                ### Handles when a function or a class throws back a crew instance
+                                # # Function with a crew method attached
+                                # def get_my_crew():
+                                #     pass
+                                # get_my_crew.crew = lambda: Crew(...)
+
+                                # # OR
+
+                                # # Class with a crew method
+                                # class CrewFactory:
+                                #     @staticmethod
+                                #     def crew():
+                                #         return Crew(...)
+                                        
+                                # my_factory = CrewFactory
                                 if callable(attr) and hasattr(attr, "crew"):
+                                    print(
+                                        f"Found valid crew function in attribute '{attr_name}' at {crew_os_path}."
+                                    )
                                     crew_instance = attr().crew()
                                     return crew_instance
+                                
+                                ### Handles when crew is direclty initialized 
+                                ### my_crew = Crew(...)  # A direct instance of Crew
+                                if isinstance(attr, Crew) and hasattr(attr, "kickoff"):
+                                    print(
+                                        f"Found valid crew object in attribute '{attr_name}' at {crew_os_path}."
+                                    )
+                                    return attr
 
                             except Exception as e:
                                 print(f"Error processing attribute {attr_name}: {e}")
