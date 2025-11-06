@@ -552,7 +552,7 @@ class BedrockCompletion(BaseLLM):
 
                     elif "contentBlockDelta" in event:
                         delta = event["contentBlockDelta"]["delta"]
-                        chunk_id = event["contentBlockDelta"]["contentBlockIndex"]
+                        response_id = event["contentBlockDelta"]["contentBlockIndex"]
                         if "text" in delta:
                             text_chunk = delta["text"]
                             logging.debug(f"Streaming text chunk: {text_chunk[:50]}...")
@@ -561,7 +561,7 @@ class BedrockCompletion(BaseLLM):
                                 chunk=text_chunk,
                                 from_task=from_task,
                                 from_agent=from_agent,
-                                chunk_id=chunk_id
+                                response_id=response_id
                             )
                         elif "toolUse" in delta and current_tool_use:
                             tool_input = delta["toolUse"].get("input", "")

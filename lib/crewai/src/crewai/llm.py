@@ -651,7 +651,7 @@ class LLM(BaseLLM):
                             chunk=chunk_content,
                             from_task=from_task,
                             from_agent=from_agent,
-                            chunk_id=chunk_id
+                            response_id=chunk_id
                         ),
                     )
             # --- 4) Fallback to non-streaming if no content received
@@ -854,7 +854,7 @@ class LLM(BaseLLM):
                     chunk=tool_call.function.arguments,
                     from_task=from_task,
                     from_agent=from_agent,
-                    chunk_id=chunk_id
+                    response_id=chunk_id
                 ),
             )
 
