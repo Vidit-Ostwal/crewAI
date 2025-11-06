@@ -552,7 +552,7 @@ class BedrockCompletion(BaseLLM):
 
                     elif "contentBlockDelta" in event:
                         delta = event["contentBlockDelta"]["delta"]
-                        response_id = event["contentBlockDelta"]["contentBlockIndex"]
+                        response_id = str(event["contentBlockDelta"]["contentBlockIndex"])
                         if "text" in delta:
                             text_chunk = delta["text"]
                             logging.debug(f"Streaming text chunk: {text_chunk[:50]}...")
