@@ -624,7 +624,7 @@ class LLM(BaseLLM):
                                         available_functions=available_functions,
                                         from_task=from_task,
                                         from_agent=from_agent,
-                                        id=chunk_id
+                                        chunk_id=chunk_id
                                     )
 
                                     if result is not None:
