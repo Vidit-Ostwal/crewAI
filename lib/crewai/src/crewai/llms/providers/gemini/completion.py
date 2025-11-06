@@ -467,7 +467,7 @@ class GeminiCompletion(BaseLLM):
                     chunk=chunk.text,
                     from_task=from_task,
                     from_agent=from_agent,
-                    chunk_id=chunk.response_id
+                    response_id=chunk.response_id
                 )
 
             if hasattr(chunk, "candidates") and chunk.candidates:
