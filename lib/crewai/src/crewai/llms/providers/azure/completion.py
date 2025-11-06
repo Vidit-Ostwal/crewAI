@@ -471,10 +471,12 @@ class AzureCompletion(BaseLLM):
                     if choice.delta and choice.delta.content:
                         content_delta = choice.delta.content
                         full_response += content_delta
+                        chunk_id = update.id
                         self._emit_stream_chunk_event(
                             chunk=content_delta,
                             from_task=from_task,
                             from_agent=from_agent,
+                            chunk_id=chunk_id
                         )
 
                     # Handle tool call streaming

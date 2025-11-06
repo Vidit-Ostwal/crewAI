@@ -565,6 +565,10 @@ class LLM(BaseLLM):
 
                 # Extract content from the chunk
                 chunk_content = None
+                chunk_id = None
+
+                if hasattr(chunk,'id'):
+                    chunk_id = chunk.id
 
                 # Safely extract content from various chunk formats
                 try:
@@ -620,6 +624,7 @@ class LLM(BaseLLM):
                                         available_functions=available_functions,
                                         from_task=from_task,
                                         from_agent=from_agent,
+                                        id=chunk_id
                                     )
 
                                     if result is not None:
@@ -640,6 +645,7 @@ class LLM(BaseLLM):
                             chunk=chunk_content,
                             from_task=from_task,
                             from_agent=from_agent,
+                            chunk_id=chunk_id
                         ),
                     )
             # --- 4) Fallback to non-streaming if no content received
@@ -822,6 +828,7 @@ class LLM(BaseLLM):
         available_functions: dict[str, Any] | None = None,
         from_task: Task | None = None,
         from_agent: Agent | None = None,
+        chunk_id: str | None = None,
     ) -> Any:
         for tool_call in tool_calls:
             current_tool_accumulator = accumulated_tool_args[tool_call.index]
@@ -841,6 +848,7 @@ class LLM(BaseLLM):
                     chunk=tool_call.function.arguments,
                     from_task=from_task,
                     from_agent=from_agent,
+                    chunk_id=chunk_id
                 ),
             )
 

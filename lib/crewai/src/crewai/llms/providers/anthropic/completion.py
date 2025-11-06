@@ -414,7 +414,11 @@ class AnthropicCompletion(BaseLLM):
 
         # Make streaming API call
         with self.client.messages.stream(**stream_params) as stream:
+            chunk_id = None
             for event in stream:
+                if hasattr(event, "message") and hasattr(event.message, "id"):
+                    chunk_id = event.message.id
+                
                 if hasattr(event, "delta") and hasattr(event.delta, "text"):
                     text_delta = event.delta.text
                     full_response += text_delta
@@ -422,6 +426,7 @@ class AnthropicCompletion(BaseLLM):
                         chunk=text_delta,
                         from_task=from_task,
                         from_agent=from_agent,
+                        chunk_id=chunk_id
                     )
 
             final_message: Message = stream.get_final_message()
