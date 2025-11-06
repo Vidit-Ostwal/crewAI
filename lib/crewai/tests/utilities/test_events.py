@@ -835,8 +835,8 @@ def test_streaming_fallback_to_non_streaming():
     def mock_call(messages, tools=None, callbacks=None, available_functions=None):
         nonlocal fallback_called
         # Emit a couple of chunks to simulate partial streaming
-        crewai_event_bus.emit(llm, event=LLMStreamChunkEvent(chunk="Test chunk 1"))
-        crewai_event_bus.emit(llm, event=LLMStreamChunkEvent(chunk="Test chunk 2"))
+        crewai_event_bus.emit(llm, event=LLMStreamChunkEvent(chunk="Test chunk 1", response_id = "Id"))
+        crewai_event_bus.emit(llm, event=LLMStreamChunkEvent(chunk="Test chunk 2", response_id = "Id"))
 
         # Mark that fallback would be called
         fallback_called = True
